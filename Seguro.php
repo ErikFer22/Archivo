@@ -39,13 +39,45 @@
     <h1>Teacher evaluation</h1>
 
     <!-- Form to upload evaluation files -->
-    <form action="procesar_evaluacion.php" method="post" enctype="multipart/form-data">
-        <label for="evidence">Upload Evaluation (PDF):</label>
-        <input type="file" name="evidence" accept=".pdf" required>
+    <form action="procesar_evaluacion.php" method="post" enctype="multipart/form-data" onsubmit="return validarPDF()">
+        <label for="evidence">Subir Evaluación (PDF):</label>
+        <input type="file" id="evidence" name="evidence" accept=".pdf" required>
         <br>
-        <small>Maximum size: 2MB</small>
+        <small>Tamaño máximo: 2MB</small>
         <br>
-        <button type="submit">Upload Evaluation</button>
+        <button type="submit">Subir Evaluación</button>
     </form>
+
+    <script>
+        function validarPDF() {
+            var inputFile = document.getElementById('evidence');
+            var file = inputFile.files[0];
+
+            if (file) {
+                var reader = new FileReader();
+
+                reader.onloadend = function (e) {
+                    var arr = (new Uint8Array(e.target.result)).subarray(0, 4);
+                    var header = "";
+                    for (var i = 0; i < arr.length; i++) {
+                        header += arr[i].toString(16);
+                    }
+
+                    // Verificar el encabezado del archivo PDF
+                    if (header !== "25504446") {
+                        alert("Por favor, selecciona un archivo PDF válido.");
+                        // Detener la propagación del evento submit si no es un PDF válido
+                        return false;
+                    }
+                };
+
+                // Leer los primeros 4 bytes del archivo (suficientes para determinar si es un PDF)
+                reader.readAsArrayBuffer(file.slice(0, 4));
+            }
+
+            return true;
+        }
+    </script>
+
 </body>
 </html>

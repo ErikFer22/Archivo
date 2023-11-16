@@ -1,27 +1,36 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Directory where evaluations will be stored
+    // Directorio donde se almacenarán las evaluaciones
     $target_dir = "uploads/";
-    
-    // Generate a unique name for the assessment
+
+    // Generar un nombre único para la evaluación
     $target_file = $target_dir . uniqid() . basename($_FILES["evidence"]["name"]);
-    
-    // Get the MIME type of the file
+
+    // Obtener el tipo MIME del archivo
     $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-    
-    // Validate MIME type (only allow PDF files)
+
+    // Validar el tipo MIME (solo permitir archivos PDF)
     if ($fileType != "pdf") {
-        echo "Only PDF files are allowed.";
+        echo "Solo se permiten archivos PDF.";
     } else {
-        // Validate the file size (2 Megabytes maximum)
+        // Validar el tamaño del archivo (2 Megabytes máximo)
         if ($_FILES["evidence"]["size"] > 2 * 1024 * 1024) {
-            echo "The file is too large. Maximum size allowed: 2MB.";
+            echo "El archivo es demasiado grande. Tamaño máximo permitido: 2MB.";
         } else {
-            // Move file to destination directory
-            if (move_uploaded_file($_FILES["evidence"]["tmp_name"], $target_file)) {
-                echo "The evaluation has been uploaded successfully.";
+            // Verificar el tipo MIME del archivo PDF nuevamente
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime = finfo_file($finfo, $_FILES["evidence"]["tmp_name"]);
+            finfo_close($finfo);
+
+            if ($mime !== "application/pdf") {
+                echo "El archivo no es un PDF válido.";
             } else {
-                echo "Error uploading file.";
+                // Mover el archivo al directorio de destino
+                if (move_uploaded_file($_FILES["evidence"]["tmp_name"], $target_file)) {
+                    echo "La evaluación se ha subido correctamente.";
+                } else {
+                    echo "Error al subir el archivo.";
+                }
             }
         }
     }
