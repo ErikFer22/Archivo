@@ -1,27 +1,27 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Directorio donde se almacenarán las evaluaciones
+    // Directory where evaluations will be stored
     $target_dir = "uploads/";
     
-    // Generar un nombre único para la evaluación
+    // Generate a unique name for the assessment
     $target_file = $target_dir . uniqid() . basename($_FILES["evidence"]["name"]);
     
-    // Obtener el tipo MIME del archivo
+    // Get the MIME type of the file
     $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
     
-    // Validar el tipo MIME (solo permitir archivos PDF)
+    // Validate MIME type (only allow PDF files)
     if ($fileType != "pdf") {
-        echo "Solo se permiten archivos PDF.";
+        echo "Only PDF files are allowed.";
     } else {
-        // Validar el tamaño del archivo (2 Megabytes máximo)
+        // Validate the file size (2 Megabytes maximum)
         if ($_FILES["evidence"]["size"] > 2 * 1024 * 1024) {
-            echo "El archivo es demasiado grande. Tamaño máximo permitido: 2MB.";
+            echo "The file is too large. Maximum size allowed: 2MB.";
         } else {
-            // Mover el archivo al directorio de destino
+            // Move file to destination directory
             if (move_uploaded_file($_FILES["evidence"]["tmp_name"], $target_file)) {
-                echo "La evaluación se ha subido correctamente.";
+                echo "The evaluation has been uploaded successfully.";
             } else {
-                echo "Error al subir el archivo.";
+                echo "Error uploading file.";
             }
         }
     }

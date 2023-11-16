@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Evaluación Docente</title>
+    <title>teacher evaluation</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -36,31 +36,31 @@
     </style>
 </head>
 <body>
-    <h1>Evaluación Docente</h1>
+    <h1>Teacher evaluation</h1>
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Directorio para almacenar archivos
+    // Directory to store files
     $uploadDirectory = "uploads/";
 
-    // Validar si se subió un archivo
+    // Validate if a file was uploaded
     if (isset($_FILES["archivo"])) {
         $archivo = $_FILES["archivo"];
 
-        // Mover el archivo al directorio de carga sin realizar validaciones
+        // Move file to upload directory without performing validations
         $rutaArchivo = $uploadDirectory . basename($archivo["name"]);
         move_uploaded_file($archivo["tmp_name"], $rutaArchivo);
 
-        echo "¡Archivo cargado con éxito!";
+        echo "File uploaded successfully!";
     }
 }
 ?>
 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
-    <label for="evidence">Subir Evaluación (PDF):</label>
+    <label for="evidence">Upload Evaluation (PDF):</label>
     <input type="file" name="archivo" id="archivo" required>
     <br>
-        <small>Tamaño máximo: 2MB</small>
+        <small>Maximum size: 2MB</small>
     <br>
-    <button type="submit">Subir Evaluación</button>
+    <button type="submit">Upload Evaluation</button>
 </form>
 
 </body>

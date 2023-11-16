@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Evaluación Docente</title>
+    <title>Teacher evaluation</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -36,16 +36,16 @@
     </style>
 </head>
 <body>
-    <h1>Evaluación Docente</h1>
+    <h1>Teacher evaluation</h1>
 
-    <!-- Formulario para subir archivos de evaluación -->
+    <!-- Form to upload evaluation files -->
     <form action="procesar_evaluacion.php" method="post" enctype="multipart/form-data">
-        <label for="evidence">Subir Evaluación (PDF):</label>
+        <label for="evidence">Upload Evaluation (PDF):</label>
         <input type="file" name="evidence" accept=".pdf" required>
         <br>
-        <small>Tamaño máximo: 2MB</small>
+        <small>Maximum size: 2MB</small>
         <br>
-        <button type="submit">Subir Evaluación</button>
+        <button type="submit">Upload Evaluation</button>
     </form>
 </body>
 </html>
